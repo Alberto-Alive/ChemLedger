@@ -3,6 +3,9 @@ from cryptography.hazmat.primitives.asymmetric.ed25519 import (
     Ed25519PrivateKey
 )
 from cryptography.exceptions import InvalidSignature
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
+
+
 
 
 def generate_key_pair():
@@ -29,10 +32,27 @@ def hash_file(path: str) -> str:
 
 
 
-def sign_file(path: str, private_key: EdEd25519PrivateKey) -> bytes:
-    with open(path: str, "rb") as file:
+def sign_file(path: str, private_key: Ed25519PrivateKey) -> bytes:
+    with open(path, "rb") as file:
         data = file.read()
 
     signature = private_key.sign(data)
 
     return signature
+
+
+def verify_file(
+    path: str,
+    signature:bytes,
+    public_key: Ed25519PublicKey 
+) -> bool:
+
+    with open(path, "rb") as file:
+        date = file.read()
+    try:
+        public_key.verify(signature, date)
+        return True
+    except InvalidSignature:
+        return False
+
+    
