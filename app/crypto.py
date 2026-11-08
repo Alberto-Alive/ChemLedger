@@ -6,7 +6,7 @@ from cryptography.exceptions import InvalidSignature
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
 
 
-
+from cryptography.hazmat.primitives import serialization
 
 def generate_key_pair():
     private_key = Ed25519PrivateKey.generate()
@@ -44,7 +44,7 @@ def sign_file(path: str, private_key: Ed25519PrivateKey) -> bytes:
 def verify_file(
     path: str,
     signature:bytes,
-    public_key: Ed25519PublicKey 
+    public_key: Ed25519PublicKey,
 ) -> bool:
 
     with open(path, "rb") as file:
@@ -56,3 +56,17 @@ def verify_file(
         return False
 
     
+def save_private_key(
+    private_key: Ed25519PrivateKey,
+    path: str,
+    password: bytes,
+) -> None:
+    
+    pem_data = private_key.private_bytes(
+        encoding=serialization.Encoding.PEM,
+    format=serialization.PrivateFormat.PKCS8,
+    encryption_algorithm=serialization.BestAvailableEncryption(password)
+    )
+
+    with open(path, "wb") as file:
+        file.write(pem_data)
