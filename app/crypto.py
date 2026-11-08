@@ -70,3 +70,14 @@ def save_private_key(
 
     with open(path, "wb") as file:
         file.write(pem_data)
+
+
+def load_private(path: str, password: bytes):
+    with open(path, "rb") as file:
+        pem_data  =file.read()
+    private_key = serialization.load_pem_private_key(
+        data=pem_data,
+        password=password
+    )
+
+    return private_key

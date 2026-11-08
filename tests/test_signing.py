@@ -1,4 +1,4 @@
-from app.crypto import generate_key_pair, sign_file, verify_file, save_private_key
+from app.crypto import generate_key_pair, sign_file, verify_file, save_private_key, load_private
 
 private_key, public_key = generate_key_pair()
 
@@ -16,3 +16,10 @@ save_private_key(
     "keys/private_key.pem",
     b"learning-password",
 )
+
+loaded_key = load_private(
+    "keys/private_key.pem",
+    b"learning-password"
+)
+
+print(type(loaded_key))
