@@ -1,4 +1,7 @@
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, UploadFile, HTTPException
+from app.crypto import load_public_key, verify_bytes
+
+public_key = load_public_key("keys/public_key.pem")
 
 app = FastAPI(title="Chem Ledger")
 
@@ -15,8 +18,23 @@ async def upload_experiments(
     experiment_data = await experiment.read()
     signature_data = await signature.read()
 
+    is_valid = verify_bytes(
+            experiment_data,
+            signature_data,
+            public_key
+        )
+
+    if not is_valid:
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid digital signature"
+        )
+
     return {
         "filename": experiment.filename,
         "file_size": len(experiment_date),
-        "signature_size": len(signature_data)
+        "signature_size": len(signature_data),
+        "verified": True
     }
+
+

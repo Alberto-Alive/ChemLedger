@@ -101,3 +101,15 @@ def load_public_key(path: str) -> Ed25519PublicKey:
     )
 
     return public_key
+
+
+def verify_bytes(
+    data: bytes,
+    signature: bytes,
+    public_key: Ed25519PublicKey
+) -> bool:
+    try:
+        public_key.verify(signature, data)
+        return True
+    except InvalidSignature:
+        return False
