@@ -91,3 +91,13 @@ def save_public_key(public_key: Ed25519PublicKey, path: str) -> None:
 
     with open(path, "wb") as file:
         file.write(pem_data)
+
+
+def load_public_key(path: str) -> Ed25519PublicKey:
+    with open(path, "rb") as file:
+        pem_data = file.read()
+    public_key = serialization.load_pem_public_key(
+        data=pem_data,
+    )
+
+    return public_key

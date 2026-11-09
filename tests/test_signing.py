@@ -1,4 +1,4 @@
-from app.crypto import generate_key_pair, sign_file, verify_file, save_private_key, load_private
+from app.crypto import generate_key_pair, sign_file, verify_file, save_private_key, load_private, save_public_key, load_public_key
 
 private_key, public_key = generate_key_pair()
 
@@ -38,3 +38,14 @@ is_valid = verify_file(
 )
 
 print("Signature valid: ", is_valid)
+
+
+
+
+save_public_key(public_key, "keys/public_key.pem")
+
+loaded_public_key = load_public_key("keys/public_key.pem")
+
+print("Loaded public key: ",
+verify_file(path, signature, loaded_public_key)
+)
