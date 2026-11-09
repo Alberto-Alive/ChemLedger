@@ -1,5 +1,7 @@
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from app.crypto import load_public_key, verify_bytes
+from app.storage import save_experiments
+
 
 public_key = load_public_key("keys/public_key.pem")
 
@@ -29,12 +31,14 @@ async def upload_experiments(
             status_code=400,
             detail="Invalid digital signature"
         )
+    stored_path = save_experiments(experiment_data)
 
     return {
         "filename": experiment.filename,
         "file_size": len(experiment_date),
         "signature_size": len(signature_data),
-        "verified": True
+        "verified": True,
+        "stored": True
     }
 
 
