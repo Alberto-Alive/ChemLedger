@@ -23,3 +23,18 @@ loaded_key = load_private(
 )
 
 print(type(loaded_key))
+
+signature = sign_file(
+    "samples/experiment_001.csv",
+    loaded_key
+)
+
+
+is_valid = verify_file(
+    "samples/experiment_001.csv",
+
+    signature,
+    public_key
+)
+
+print("Signature valid: ", is_valid)

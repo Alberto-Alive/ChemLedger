@@ -81,3 +81,13 @@ def load_private(path: str, password: bytes):
     )
 
     return private_key
+
+
+def save_public_key(public_key: Ed25519PublicKey, path: str) -> None:
+    pem_data = public_key.public_bytes(
+        encoding=serialization.Encoding.PEM,
+        format=serialization.PublicFormat.SubjectPublicKeyInfo
+    )
+
+    with open(path, "wb") as file:
+        file.write(pem_data)
